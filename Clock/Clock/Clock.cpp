@@ -87,9 +87,6 @@ int main() {
 	Shapes shape;
 	shapes_position(shape);
 
-	sf::ContextSettings settings; // аньтяльзинг 
-	settings.antialiasingLevel = 8;
-
 	sf::RenderWindow window(sf::VideoMode(unsigned int(WINDOW_SIZE.x), unsigned int(WINDOW_SIZE.y)), "Clock", sf::Style::Default, settings);
 	
 	start_time(window, shape);
