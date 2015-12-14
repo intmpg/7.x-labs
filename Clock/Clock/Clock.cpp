@@ -23,12 +23,12 @@ void shapes_position(Shapes &shape) {
 	shape.minuteHand.setFillColor(sf::Color::Black);
 	position_hand(shape.secondHand, 190, 6);
 	shape.secondHand.setFillColor(sf::Color::Red);
-	shape.backgroung.setSize(WINDOW_SIZE);
-	shape.backgroung.setPosition(0, 0);
+	shape.background.setSize(WINDOW_SIZE);
+	shape.background.setPosition(0, 0);
 }
 
-void coordinate_points(sf::Vector2f(&pointCoordinates)[AMOUNT_POINTS]) {
-	sf::Vector2f coordinatePoint;
+void coordinate_points(Vector2f(&pointCoordinates)[AMOUNT_POINTS]) {
+	Vector2f coordinatePoint;
 	for (int i = 0; i < AMOUNT_POINTS; i++) {
 		coordinatePoint.x = START_X + SCALE * cos(i * 6 * float(M_PI) / 180);
 		coordinatePoint.y = START_Y + SCALE * sin(i * 6 * float(M_PI) / 180);
@@ -36,7 +36,7 @@ void coordinate_points(sf::Vector2f(&pointCoordinates)[AMOUNT_POINTS]) {
 	}
 }
 
-void draw_secondPoint(RenderWindow &window, Shapes &shape, sf::Vector2f(&pointCoordinates)[AMOUNT_POINTS]) {
+void draw_secondPoint(RenderWindow &window, Shapes &shape, std::vector<Vector2f> const& points) {
 	for (int i = 0; i < AMOUNT_POINTS; i++) {
 		if (i % 15 == 0) {
 			shape.point.setRadius(3);
@@ -53,18 +53,27 @@ void draw_secondPoint(RenderWindow &window, Shapes &shape, sf::Vector2f(&pointCo
 			shape.point.setOrigin(2 / 2, 2 / 2);
 			shape.point.setFillColor(sf::Color::Black);
 		}
-		shape.point.setPosition(pointCoordinates[i].x, pointCoordinates[i].y);
+		shape.point.setPosition(pointCoordinates[i]);
 		window.draw(shape.point);
 	}
 }
 
+void draw_clock(RenderWindow &window, Shapes &shape, std::vector<Vector2f> const& points)
+{
+	window.draw(shape.background);
+	window.draw(shape.hourHand);
+	window.draw(shape.minuteHand);
+	window.draw(shape.secondHand);
+	draw_secondPoint(window, shape, pointCoordinates);
+}
+
 void start_time(RenderWindow &window, Shapes &shape) {
-	sf::Vector2f pointCoordinates[AMOUNT_POINTS];
+	std::vector<Vector2f> const& points;
 	SYSTEMTIME sysTime;
 	coordinate_points(pointCoordinates);
 	while (window.isOpen()) {
 		GetSystemTime(&sysTime);
-		shape.secondHand.setRotation(float(sysTime.wSecond * 6)); //по 6 градусов на одну секунду 
+		shape.secondHand.setRotation(float(sysTime.wSecond * 6)); 
 		shape.minuteHand.setRotation(float(sysTime.wMinute * 6));
 		shape.hourHand.setRotation(float((sysTime.wHour + 3) * 30));
 		sf::Event event;
@@ -73,12 +82,7 @@ void start_time(RenderWindow &window, Shapes &shape) {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		window.clear();
-		window.draw(shape.backgroung);
-		window.draw(shape.hourHand);
-		window.draw(shape.minuteHand);
-		window.draw(shape.secondHand);
-		draw_secondPoint(window, shape, pointCoordinates);
+		draw_clock(window, shape, pointCoordinates);
 		window.display();
 	}
 }
@@ -86,9 +90,7 @@ void start_time(RenderWindow &window, Shapes &shape) {
 int main() {
 	Shapes shape;
 	shapes_position(shape);
-
-	sf::RenderWindow window(sf::VideoMode(unsigned int(WINDOW_SIZE.x), unsigned int(WINDOW_SIZE.y)), "Clock", sf::Style::Default, settings);
-	
+	sf::RenderWindow window(sf::VideoMode(unsigned int(WINDOW_SIZE.x), unsigned int(WINDOW_SIZE.y)), "Clock", sf::Style::Default);
 	start_time(window, shape);
 	return 0;
 }

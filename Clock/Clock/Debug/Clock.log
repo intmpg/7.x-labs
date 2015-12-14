@@ -1,16 +1,21 @@
-﻿Сборка начата 09.12.2015 11:03:52.
+﻿Сборка начата 15.12.2015 0:02:05.
      1>Проект "C:\lab7\Clock\Clock\Clock.vcxproj" в узле 2 (целевые объекты Build).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\SFML-Visual_Studio2015RCx64\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D SFML_DYNAMIC /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Clock.cpp stdafx.cpp
-         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\SFML-Visual_Studio2015RCx64\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D SFML_DYNAMIC /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Clock.cpp
          Clock.cpp
-         Создание кода...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\lab7\Clock\Debug\Clock.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML-Visual_Studio2015RCx64\lib" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\lab7\Clock\Debug\Clock.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\lab7\Clock\Debug\Clock.lib" /MACHINE:X86 Debug\Clock.obj
-         Debug\stdafx.obj
-         Clock.vcxproj -> C:\lab7\Clock\Debug\Clock.exe
-     1>Сборка проекта "C:\lab7\Clock\Clock\Clock.vcxproj" завершена (целевые объекты Build).
+     1>c:\lab7\clock\clock\clock.cpp(56): error C2065: pointCoordinates: необъявленный идентификатор
+     1>c:\lab7\clock\clock\clock.cpp(67): error C2065: pointCoordinates: необъявленный идентификатор
+     1>c:\lab7\clock\clock\clock.cpp(71): error C2530: points: ссылки должны быть инициализированы
+     1>c:\lab7\clock\clock\clock.cpp(72): error C2662: void std::vector<sf::Vector2f,std::allocator<_Ty>>::reserve(unsigned int): невозможно преобразовать указатель "this" из "const std::vector<sf::Vector2f,std::allocator<_Ty>>" в "std::vector<sf::Vector2f,std::allocator<_Ty>> &"
+                 with
+                 [
+                     _Ty=sf::Vector2f
+                 ]
+         c:\lab7\clock\clock\clock.cpp(72): note: В результате преобразования теряются квалификаторы
+     1>c:\lab7\clock\clock\clock.cpp(74): error C2065: pointCoordinates: необъявленный идентификатор
+     1>c:\lab7\clock\clock\clock.cpp(86): error C2065: pointCoordinates: необъявленный идентификатор
+     1>Сборка проекта "C:\lab7\Clock\Clock\Clock.vcxproj" завершена (целевые объекты Build) с ошибкой.
 
-Сборка успешно завершена.
+Ошибка сборки.
 
-Затраченное время: 00:00:01.15
+Затраченное время: 00:00:01.00
