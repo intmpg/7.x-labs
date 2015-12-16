@@ -5,49 +5,43 @@
 
 
 using namespace sf;
-struct RectangleStruct
+struct Rectangle
 {
 	RectangleShape square;
 };
-struct SecreteStruct
+struct Stage
 {
-	int color;
-	int size;
-	int move;
-	int rotation;
-};
-struct StageStruct
-{
-	int color;
-	int size;
-	int move;
-	int rotation;
+	bool color;
+	bool size;
+	bool move;
+	bool rotation;
 };
 
-void Draw(RenderWindow& window, RectangleStruct rect[QUANTITY])
+void Draw(RenderWindow& window, Rectangle rect)
 {
-	for (int i = 0; i < QUANTITY; i++)
+	window.clear(sf::Color::White);
+	
+	for (Rectangle &rect : rects)
 	{
 		window.draw(rect[i].square);
 	}
 	window.display();
-	window.clear(sf::Color::White);
 }
-void InitializationStage(StageStruct& stage)
+void InitializationStage(Stage & stage)
 {
 	stage.color = 1;
 	stage.size = 1;
 	stage.move = 1;
 	stage.rotation = 1;
 }
-void InitializationSecret(SecreteStruct& secret)
+void InitializationSecret(Stage & secret)
 {
 	secret.color = 1;
 	secret.move = 1;
 	secret.rotation = 1;
 	secret.size = 1;
 }
-void InitializationSqure(RectangleStruct(&rect)[QUANTITY])
+void InitializationSqure(Rectangle(&rect)[QUANTITY])
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
@@ -56,7 +50,7 @@ void InitializationSqure(RectangleStruct(&rect)[QUANTITY])
 		rect[i].square.setPosition(50 * i, 50);
 	}	
 }
-void ChangeColor(RectangleStruct(&rect)[QUANTITY], int i, float time)
+void ChangeColor(Rectangle(&rect)[QUANTITY], int i, float time)
 {
 	
 	rect[0].square.setFillColor(Color(255, i* 1 * time, 0));
@@ -65,33 +59,57 @@ void ChangeColor(RectangleStruct(&rect)[QUANTITY], int i, float time)
 	rect[3].square.setFillColor(Color(i* 1 * time, 0, 0));
 	rect[4].square.setFillColor(Color(255, 0, i * 1 * time));
 }
-void ChangeSize(RectangleStruct(&rect)[QUANTITY], float j, float time)
+void ChangeSize(Rectangle(&rect)[QUANTITY], float j, float time)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.setScale(j, j);
 	}
 }
-void StageSelect(StageStruct& stage, int i, float j, RectangleStruct rect[QUANTITY])
+void StageSelect(Stage& stage, int i, float j, Rectangle rect[QUANTITY])
 {
-	if (i == 256) stage.color = -1;
-	if (i == 0) stage.color = 1;
-	if (j >= 2) { stage.size = -1; }
-	if (j <= 1) { stage.size =  1; }
-	if ((rect[2].square.getPosition().x <= 150) && (rect[2].square.getPosition().y <= 100)) stage.move = 1;
-	if ((rect[2].square.getPosition().x >= WINDOW_X - 200) && (rect[2].square.getPosition().y <= 100)) stage.move = 2;
-	if ((rect[2].square.getPosition().x >= WINDOW_X - 200) && (rect[2].square.getPosition().y >= WINDOW_X - 100)) stage.move = 3;
-	if ((rect[2].square.getPosition().x <= 150) && (rect[2].square.getPosition().y >= WINDOW_X - 100)) stage.move = 4;
+	if (i == 256)
+	{
+		stage.color = -1;
+	}
+	if (i == 0)
+	{
+		stage.color = 1;
+	}
+	if (j >= 2) 
+	{
+		stage.size = -1; 
+	}
+	if (j <= 1) 
+	{ 
+		stage.size =  1; 
+	}
+	if ((rect[2].square.getPosition().x <= 150) && (rect[2].square.getPosition().y <= 100))
+	{
+		stage.move = 1;
+	}
+	if ((rect[2].square.getPosition().x >= WINDOW_X - 200) && (rect[2].square.getPosition().y <= 100))
+	{
+		stage.move = 2;
+	}
+	if ((rect[2].square.getPosition().x >= WINDOW_X - 200) && (rect[2].square.getPosition().y >= WINDOW_X - 100))
+	{
+		stage.move = 3;
+	}
+	if ((rect[2].square.getPosition().x <= 150) && (rect[2].square.getPosition().y >= WINDOW_X - 100))
+	{
+		stage.move = 4;
+	}
 
 }
-void Move(RectangleStruct(&rect)[QUANTITY], Vector2f speed_move)
+void Move(Rectangle(&rect)[QUANTITY], Vector2f speed_move)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.move(speed_move.x, speed_move.y);
 	}
 }
-void Rotation(RectangleStruct(&rect)[QUANTITY], float time)
+void Rotation(Rectangle(&rect)[QUANTITY], float time)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
@@ -99,7 +117,7 @@ void Rotation(RectangleStruct(&rect)[QUANTITY], float time)
 		
 	}
 }
-void MoveChange(StageStruct stage, int& i_color, float& i_size, Vector2f& speed_move, float& time)
+void MoveChange(Stage stage, int& i_color, float& i_size, Vector2f& speed_move, float& time)
 {
 	if (stage.color == 1) i_color++;
 	if (stage.color == -1) i_color--;
@@ -112,7 +130,7 @@ void MoveChange(StageStruct stage, int& i_color, float& i_size, Vector2f& speed_
 
 	
 }
-void SecretChange(SecreteStruct& secret)
+void SecretChange(Stage& secret)
 {
 	secret.color = rand() % 2;
 	secret.move = rand() % 2;
@@ -121,9 +139,9 @@ void SecretChange(SecreteStruct& secret)
 }
 void RunProgram(RenderWindow& window)
 {
-	RectangleStruct rect[QUANTITY] = {};
-	SecreteStruct secret;
-	StageStruct stage;
+	Rectangle rect[QUANTITY] = {};
+	Stage secret;
+	Stage stage;
 	InitializationSqure(rect);
 	Clock clock;
 	Clock change_clock;
