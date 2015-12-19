@@ -20,7 +20,7 @@ struct Stage
 void Draw(RenderWindow& window, Rectangle rect)
 {
 	window.clear(sf::Color::White);
-	
+
 	for (Rectangle &rect : rects)
 	{
 		window.draw(rect[i].square);
@@ -41,32 +41,32 @@ void InitializationSecret(Stage & secret)
 	secret.rotation = 1;
 	secret.size = 1;
 }
-void InitializationSqure(Rectangle(&rect)[QUANTITY])
+void InitializationSqure(std::vector<rect>& mass_rect)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.setSize(sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));
 		rect[i].square.setFillColor(Color(255, 0, 0));
 		rect[i].square.setPosition(50 * i, 50);
-	}	
+	}
 }
-void ChangeColor(Rectangle(&rect)[QUANTITY], int i, float time)
+void ChangeColor(std::vector<rect>& mass_rect, int i, float time)
 {
-	
-	rect[0].square.setFillColor(Color(255, i* 1 * time, 0));
-	rect[1].square.setFillColor(Color(0, i * 1 * time, i* 1 * time));
-	rect[2].square.setFillColor(Color(0, i* 1 * time, 0));
-	rect[3].square.setFillColor(Color(i* 1 * time, 0, 0));
+
+	rect[0].square.setFillColor(Color(255, i * 1 * time, 0));
+	rect[1].square.setFillColor(Color(0, i * 1 * time, i * 1 * time));
+	rect[2].square.setFillColor(Color(0, i * 1 * time, 0));
+	rect[3].square.setFillColor(Color(i * 1 * time, 0, 0));
 	rect[4].square.setFillColor(Color(255, 0, i * 1 * time));
 }
-void ChangeSize(Rectangle(&rect)[QUANTITY], float j, float time)
+void ChangeSize(std::vector<rect>& mass_rect, float j, float time)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.setScale(j, j);
 	}
 }
-void StageSelect(Stage& stage, int i, float j, Rectangle rect[QUANTITY])
+void StageSelect(Stage& stage, int i, float j, std::vector<rect>& mass_rect)
 {
 	if (i == 256)
 	{
@@ -76,13 +76,13 @@ void StageSelect(Stage& stage, int i, float j, Rectangle rect[QUANTITY])
 	{
 		stage.color = 1;
 	}
-	if (j >= 2) 
+	if (j >= 2)
 	{
-		stage.size = -1; 
+		stage.size = -1;
 	}
-	if (j <= 1) 
-	{ 
-		stage.size =  1; 
+	if (j <= 1)
+	{
+		stage.size = 1;
 	}
 	if ((rect[2].square.getPosition().x <= 150) && (rect[2].square.getPosition().y <= 100))
 	{
@@ -102,19 +102,19 @@ void StageSelect(Stage& stage, int i, float j, Rectangle rect[QUANTITY])
 	}
 
 }
-void Move(Rectangle(&rect)[QUANTITY], Vector2f speed_move)
+void Move(std::vector<rect>& mass_rect, Vector2f speed_move)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.move(speed_move.x, speed_move.y);
 	}
 }
-void Rotation(Rectangle(&rect)[QUANTITY], float time)
+void Rotation(std::vector<rect>& mass_rect, float time)
 {
 	for (int i = 0; i < QUANTITY; i++)
 	{
 		rect[i].square.setRotation(rect[i].square.getRotation() + (0.3 * time));
-		
+
 	}
 }
 void MoveChange(Stage stage, int& i_color, float& i_size, Vector2f& speed_move, float& time)
@@ -128,7 +128,7 @@ void MoveChange(Stage stage, int& i_color, float& i_size, Vector2f& speed_move, 
 	if (stage.move == 3) { speed_move.x = -SPEED; speed_move.y = 0; }
 	if (stage.move == 4) { speed_move.x = 0; speed_move.y = -SPEED; }
 
-	
+
 }
 void SecretChange(Stage& secret)
 {
@@ -139,7 +139,9 @@ void SecretChange(Stage& secret)
 }
 void RunProgram(RenderWindow& window)
 {
-	Rectangle rect[QUANTITY] = {};
+	Rectangle rect;
+	std::vector<rect> mass_rect;
+	mass_rect.reserve(QUANTITY);
 	Stage secret;
 	Stage stage;
 	InitializationSqure(rect);
@@ -178,15 +180,15 @@ void RunProgram(RenderWindow& window)
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		StageSelect(stage, i_color, i_size, rect);
+		StageSelect(stage, i_color, i_size, mass_rect);
 		MoveChange(stage, i_color, i_size, speed_move, time);
 
-		if (secret.rotation == 1) Rotation(rect, time);
-		if (secret.color == 1) ChangeColor(rect, i_color, time);
-		if (secret.size == 1) ChangeSize(rect, i_size, time);
-		if (secret.move == 1) Move(rect, speed_move);
+		if (secret.rotation == 1) Rotation(mass_rect, time);
+		if (secret.color == 1) ChangeColor(mass_rect, i_color, time);
+		if (secret.size == 1) ChangeSize(mass_rect, i_size, time);
+		if (secret.move == 1) Move(mass_rect, speed_move);
 
-		Draw(window, rect);
+		Draw(window, mass_rect);
 	}
 }
 int main()
