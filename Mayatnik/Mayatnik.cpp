@@ -33,14 +33,11 @@ ConvexShape cargo() {
 	return convex;
 }
 
-float x_position(float rad_b, float & grad_pos) {
+Vector2f cartesian(float rad_b, float & grad_pos) {
 	float x = float(rad_b * cos(grad_pos * M_PI / 180));
-	return x;
-}
-
-float y_position(float rad_b, float & grad_pos) {
 	float y = float(rad_b * sin(grad_pos * M_PI / 180));
-	return y;
+	Vector2f pos = {x, y};
+	return pos;
 }
 
 ConvexShape shark(float x_pos, float y_pos, int tooth, float rad_b, float rad_s) {
@@ -60,10 +57,8 @@ ConvexShape shark(float x_pos, float y_pos, int tooth, float rad_b, float rad_s)
 	{
 
 		if (big) {
-			grad_pos = grad_pos - grad;
-			x = x_position(rad_b, grad_pos);
-			y = y_position(rad_b, grad_pos);
-			grad_pos = grad_pos + grad;
+			pos: sf::Vector2f
+			pos = cartesian(rad_b, grad_pos - grad);
 			flag++;
 			if (flag == 1) {
 				big = false;
@@ -71,8 +66,8 @@ ConvexShape shark(float x_pos, float y_pos, int tooth, float rad_b, float rad_s)
 			}
 		}
 		else {
-			x = x_position(rad_s, grad_pos);
-			y = y_position(rad_s, grad_pos);
+			pos: sf::Vector2f
+			pos = cartesian(rad_b, grad_pos - grad);
 			flag++;
 			if (flag == 2) {
 				big = true;
@@ -85,25 +80,23 @@ ConvexShape shark(float x_pos, float y_pos, int tooth, float rad_b, float rad_s)
 	return convex;
 }
 
-ConvexShape gear(float x_pos, float y_pos, int tooth, float rad_b, float rad_s) {
+ConvexShape gear(float x, float y, int tooth, float rad_b, float rad_s) {
 	sf::ConvexShape convex;
-	float x1 = 0;
-	float y1 = 0;
-	float x, y;
+	sf::Vector2f(0, 0);
+	sf::Vector2f(x, y);
 	float grad = float(360 / (tooth * 4));
 	int point_num = tooth * 4;
 	bool big = true;
 	int flag = 0;
 	float grad_pos = 0;
 	convex.setPointCount(point_num);
-	convex.setPosition(x_pos, y_pos);
+	convex.setPosition(x, y);
 	convex.setFillColor(Color::Blue);
 	for (int i = 0; i < point_num; i++)
 	{
 
 		if (big) {
-			x = x_position(rad_b, grad_pos);
-			y = y_position(rad_b, grad_pos);
+			pos = cartesian(rad_b, grad_pos - grad);
 			flag++;
 			if (flag == 2) {
 				big = false;
@@ -111,8 +104,7 @@ ConvexShape gear(float x_pos, float y_pos, int tooth, float rad_b, float rad_s) 
 			}
 		}
 		else {
-			x = x_position(rad_s, grad_pos);
-			y = y_position(rad_s, grad_pos);
+			pos = cartesian(rad_b, grad_pos - grad);
 			flag++;
 			if (flag == 2) {
 				big = true;
